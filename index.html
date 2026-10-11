@@ -55,15 +55,110 @@
   .shapeKey .rsq{border-radius:4px}
   .legend.inline{display:flex;flex-wrap:wrap;gap:4px 14px}
   .chartBox{position:relative;height:360px;margin-top:8px}
+
+  /* ===== redesign ===== */
+  :root{--accent:#1f5fae;--soft:#eef2f6;--shadow:0 1px 2px rgba(16,24,40,.05),0 4px 14px rgba(16,24,40,.05)}
+  @media (prefers-color-scheme: dark){:root{--accent:#6aa7ee;--soft:#202b37;--shadow:none}}
+  html{scroll-behavior:smooth;scroll-padding-top:60px}
+  body{font-variant-numeric:tabular-nums}
+  main{max-width:1120px;padding:0 16px 32px}
+  h2{font-size:1.08rem;letter-spacing:-.01em}
+  .card{border-radius:16px;box-shadow:var(--shadow);padding:18px}
+  .topnav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .topnav .in{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:18px;overflow-x:auto;white-space:nowrap}
+  .brand{font-weight:700;letter-spacing:-.01em}
+  @media(max-width:600px){.topnav .clock{display:none}}
+  .topnav a{color:var(--muted);text-decoration:none;font-size:.88rem}
+  .topnav a:hover{color:var(--ink)}
+  .topnav .clock{margin-left:auto;color:var(--muted);font-size:.82rem}
+  .hero{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+  .hero .strip{height:8px;background:var(--line)}
+  .heroIn{padding:22px 20px 20px;display:grid;grid-template-columns:auto 1fr;gap:6px 28px;align-items:center}
+  @media(max-width:700px){.heroIn{grid-template-columns:1fr}}
+  .eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);grid-column:1/-1}
+  .heroNum{font-size:clamp(3.6rem,12vw,5.6rem);line-height:1;font-weight:800;letter-spacing:-.04em}
+  .heroBand{display:inline-block;margin-top:8px;padding:4px 14px;border-radius:999px;color:#fff;font-weight:700}
+  .heroTxt h1{font-size:clamp(1.3rem,4.5vw,1.9rem);margin:0 0 6px;letter-spacing:-.02em}
+  .heroTxt p{margin:0 0 12px;color:var(--muted);max-width:56ch}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--soft);border-radius:999px;padding:4px 12px;font-size:.82rem}
+  .scale{grid-column:1/-1;margin-top:14px}
+  .scaleBar{display:flex;gap:2px;height:12px}
+  .scaleBar i{display:block;border-radius:3px}
+  .scaleMark{position:relative;height:16px}
+  .scaleMark b{position:absolute;top:2px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:10px solid var(--ink);transform:translateX(-50%)}
+  .scaleTicks{position:relative;height:16px;font-size:.72rem;color:var(--muted)}
+  .scaleTicks span{position:absolute;transform:translateX(-50%)}
+  .secHead{display:flex;align-items:baseline;gap:10px;margin:30px 0 4px;font-size:1.25rem;letter-spacing:-.02em}
+  .secHead small{font-weight:400;color:var(--muted);font-size:.85rem}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+  @media(max-width:800px){.stats{grid-template-columns:1fr 1fr}}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+  .tile .k{font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .tile .v{font-size:1.9rem;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+  .tile .s{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+  .toggles{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}
+  .toggles button{background:var(--soft);color:var(--ink);border:1px solid transparent;border-radius:999px;padding:5px 12px;font-size:.82rem;display:inline-flex;align-items:center;gap:7px}
+  .toggles button[aria-pressed="false"]{opacity:.5;text-decoration:line-through}
+  .toggles button:focus-visible,.topnav a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .heat{display:grid;grid-template-columns:62px 1fr;gap:3px 8px;align-items:center;margin-top:10px}
+  .heat .cells{display:grid;gap:2px}
+  .heat .cells i{height:26px;border-radius:3px;display:block}
+  .heat .rl{font-size:.82rem}
+  .heat .hl{display:grid;font-size:.72rem;color:var(--muted)}
+  .bh{display:grid;grid-template-columns:62px 1fr 104px;gap:8px;align-items:center;margin:8px 0;font-size:.85rem}
+  .bh .seg{display:flex;gap:2px;height:20px}
+  .bh .seg i{display:block;border-radius:4px;min-width:0}
+  .bh .tot{color:var(--muted);font-size:.78rem;text-align:right;white-space:nowrap}
+  .twoCol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:800px){.twoCol{grid-template-columns:1fr}}
+  .chartBox.sm{height:280px}
+  details{margin-top:10px;font-size:.85rem}
+  summary{cursor:pointer;color:var(--accent);font-weight:600}
+  .tblWrap{overflow-x:auto;margin-top:8px}
+  table.t{border-collapse:collapse;width:100%;font-size:.82rem}
+  table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  table.t th{color:var(--muted);font-weight:600;white-space:nowrap}
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:800px){.cards3{grid-template-columns:1fr}}
+  .cards3 .card{margin:0}
+  .cards3 h3{margin:0 0 4px;font-size:.98rem}
+  .cards3 p{margin:0;font-size:.88rem;color:var(--muted)}
+  .pill{display:inline-block;padding:1px 10px;border-radius:999px;color:#fff;font-weight:600;font-size:.8rem;white-space:nowrap}
+  footer.foot{border-top:1px solid var(--line);margin-top:28px;padding:16px 0;font-size:.8rem;color:var(--muted)}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.fill{transition:none}}
 </style>
 </head>
 <body>
-<header>
-  <h1>Singapore Air Quality</h1>
-  <div class="sub">NEA PSI (official) alongside IQAir US AQI. <span id="clock"></span></div>
-</header>
+<nav class="topnav" aria-label="Sections"><div class="in">
+  <span class="brand">SG Air Quality</span>
+  <a href="#now">Now</a><a href="#regions">Regions</a><a href="#trends">Trends</a><a href="#learn">Learn</a>
+  <span class="clock" id="clock"></span>
+</div></nav>
+
 
 <main>
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="strip" id="heroStrip"></div>
+    <div class="heroIn">
+      <div class="eyebrow">Singapore, 24-hr PSI (highest of the 5 regions)</div>
+      <div><div class="heroNum" id="heroNum">-</div><span class="heroBand" id="heroBand" style="background:#9aa8b6">Loading</span></div>
+      <div class="heroTxt">
+        <h1 id="heroTitle">Checking the air...</h1>
+        <p id="heroTip"></p>
+        <div class="chips"><span class="chip" id="chipRegion">-</span><span class="chip" id="chipTrend">-</span><span class="chip" id="chipUpdated">-</span></div>
+      </div>
+      <div class="scale" aria-hidden="true">
+        <div class="scaleBar" id="scaleBar"></div>
+        <div class="scaleMark"><b id="scaleMark" style="left:0"></b></div>
+        <div class="scaleTicks" id="scaleTicks"></div>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="secHead" id="now">Right now <small>NEA readings and WAQI US AQI</small></h2>
+  <div class="stats" id="stats"></div>
   <div class="grid">
     <!-- NEA PANEL -->
     <section class="card" aria-labelledby="neaTitle">
@@ -90,21 +185,22 @@
       </div>
     </section>
 
-    <!-- IQAIR PANEL -->
+    <!-- US AQI PANEL (WAQI) -->
     <section class="card" aria-labelledby="aqTitle">
-      <h2 id="aqTitle">IQAir US AQI</h2>
+      <h2 id="aqTitle">US AQI (WAQI)</h2>
       <div class="sub" id="aqUpdated">Loading...</div>
       <div class="gaugeWrap"><svg id="aqGauge" viewBox="0 0 300 200" role="img" aria-label="US AQI gauge"></svg></div>
       <div style="text-align:center"><span class="badge" id="aqBadge">-</span>
         <p class="advice" id="aqAdvice"></p>
         <div class="stale" id="aqStale" hidden>Showing the last saved reading.</div></div>
-      <div id="aqErr" class="err" hidden><span id="aqErrMsg">IQAir data unavailable.</span> <button id="aqRetry">Retry</button></div>
+      <div id="aqErr" class="err" hidden><span id="aqErrMsg">US AQI data unavailable.</span> <button id="aqRetry">Retry</button></div>
       <div class="legend" id="aqLegend" aria-label="US AQI legend"></div>
     </section>
   </div>
 
   <p class="note" style="margin-top:-4px">PSI and US AQI use different scales and breakpoints, so the numbers will not match. Use each against its own legend.</p>
 
+  <h2 class="secHead" id="regions">By region <small>Where the air is better or worse</small></h2>
   <section class="card" aria-labelledby="regTitle">
     <h2 id="regTitle">NEA by region: 24-hr PSI and 1-hr PM2.5</h2>
     <div class="sub" id="regUpdated">Loading...</div>
@@ -155,22 +251,64 @@
     </div>
   </section>
 
+  <h2 class="secHead" id="trends">Trends <small>Last 24 hours and last 7 days, from NEA</small></h2>
   <section class="card" aria-labelledby="neaChartTitle">
-    <h2 id="neaChartTitle">NEA PSI: 24-hour trend</h2>
-    <div class="sub">National figure (thick line) and the five regions. Shading follows the PSI legend.</div>
-    <div class="chartBox"><canvas id="neaTrend" aria-label="NEA PSI by region over 24 hours"></canvas></div>
+    <h2 id="neaChartTitle">24-hour PSI by region</h2>
+    <div class="sub">Thick line is the national figure (highest region). Shading follows the PSI bands. Tap a region to hide or show it in both line charts.</div>
+    <div class="toggles" id="regToggles" role="group" aria-label="Regions shown in line charts"></div>
+    <div class="chartBox"><canvas id="neaTrend" role="img" aria-label="NEA 24-hr PSI by region over the last 24 hours"></canvas></div>
     <div class="legend inline" id="neaTrendLegend" aria-label="PSI bands used for chart shading"></div>
+    <details><summary>View as table</summary><div class="tblWrap" id="trendTable"></div></details>
   </section>
 
+  <div class="twoCol">
+    <section class="card" aria-labelledby="heatTitle">
+      <h2 id="heatTitle">Hour by hour heat strip</h2>
+      <div class="sub">Each cell is one hourly 24-hr PSI reading, coloured by band. Oldest on the left.</div>
+      <div class="heat" id="heat"></div>
+      <div class="legend inline" id="heatLegend" style="margin-top:12px"></div>
+    </section>
+    <section class="card" aria-labelledby="bhTitle">
+      <h2 id="bhTitle">Hours in each band</h2>
+      <div class="sub">How many of the last readings fell in each PSI band, by region.</div>
+      <div id="bandHours" style="margin-top:10px"></div>
+      <div class="legend inline" id="bhLegend" style="margin-top:12px"></div>
+    </section>
+  </div>
 
-  <p class="note">Sources: NEA via data.gov.sg; IQAir AirVisual. This page is for general information only.</p>
+  <section class="card" aria-labelledby="pmTitle">
+    <h2 id="pmTitle">24-hour average PM2.5 by region</h2>
+    <div class="sub">PM2.5 is the fine particle behind most haze days. This is the 24-hr average that feeds the PSI, in µg/m³.</div>
+    <div class="chartBox sm"><canvas id="pmTrend" role="img" aria-label="24-hour average PM2.5 by region over the last 24 hours"></canvas></div>
+  </section>
+
+  <section class="card" aria-labelledby="weekTitle">
+    <h2 id="weekTitle">Last 7 days</h2>
+    <div class="sub">Bars show each day's peak 24-hr PSI, coloured by band. The line is the day's average. Both use the highest region each hour.</div>
+    <div id="weekErr" class="err" hidden>Seven-day history is unavailable right now.</div>
+    <div class="chartBox sm"><canvas id="weekChart" role="img" aria-label="Daily peak and average PSI for the last 7 days"></canvas></div>
+    <details><summary>View as table</summary><div class="tblWrap" id="weekTable"></div></details>
+  </section>
+
+  <h2 class="secHead" id="learn">Learn <small>What the numbers mean and what to do</small></h2>
+  <div class="cards3">
+    <div class="card"><h3>PSI</h3><p>The Pollutant Standards Index is Singapore's official air quality number. NEA reports a 24-hour PSI, which blends a rolling 24-hour view of PM2.5, PM10, SO2, NO2, CO and O3, and the worst pollutant sets the index.</p></div>
+    <div class="card"><h3>PM2.5</h3><p>Fine particles smaller than 2.5 micrometres. They reach deep into the lungs and drive haze. NEA also gives a 1-hour PM2.5 reading, which reacts faster than the 24-hour PSI when haze rolls in.</p></div>
+    <div class="card"><h3>US AQI</h3><p>A different scale used by many apps. Its breakpoints are stricter than PSI, so the same air looks worse on US AQI. Compare each number only with its own legend.</p></div>
+  </div>
+
+  <section class="card" style="margin-top:16px" aria-labelledby="bandTitle">
+    <h2 id="bandTitle">PSI bands and health advice</h2>
+    <div class="sub">Based on NEA's published advisories. Check nea.gov.sg for the official guidance.</div>
+    <div class="tblWrap"><table class="t" id="adviceTable"></table></div>
+  </section>
+
+  <footer class="foot">Sources: National Environment Agency via data.gov.sg (PSI, PM2.5); World Air Quality Index Project, waqi.info (US AQI). This page is for general information only and is not affiliated with NEA. Readings refresh automatically while this tab is open.</footer>
 </main>
 
 <script>
 /* ===== CONFIG ===== */
-const PROXY_URL = "https://runderful.vercel.app/api/iqair";
 const NEA_REFRESH_MIN = 10;
-const IQAIR_REFRESH_MIN = 30;
 const NEA_API = "https://api-open.data.gov.sg/v2/real-time/api/psi";
 const PM25_API = "https://api-open.data.gov.sg/v2/real-time/api/pm25";
 const PROXY_STATIONS_URL = "https://runderful.vercel.app/api/waqi";
@@ -293,10 +431,19 @@ function renderNea(items){
 
 
   renderNeaChart();
+  renderHero(items);
+  renderStats(items);
+  renderHeat(items);
+  renderBandHours(items);
+  renderPmChart(items);
+  renderTrendTable(items);
 }
 
 /* ===== REGION MAP (static SVG) ===== */
-const REGION_COLORS = {north:"#0891b2", west:"#7c3aed", central:"#64748b", east:"#a16207", south:"#4d7c0f"};
+const REGION_PAL = {north:["#2a78d6","#3987e5"], west:["#eb6834","#d95926"], central:["#1baf7a","#199e70"], east:["#eda100","#c98500"], south:["#e87ba4","#d55181"]};
+const isDark = () => window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+const regionColor = r => REGION_PAL[r][isDark() ? 1 : 0];
+const hiddenRegions = new Set();
 // NEA's own region marker positions (regionMetadata.labelLocation in the data.gov.sg feed), as [lat, lon]
 const NEA_LABEL_LOC = {north:[1.41803,103.82], south:[1.29587,103.82], east:[1.35735,103.94], west:[1.35735,103.70], central:[1.35735,103.82]};
 const MAP_PROJ = {minLon:103.60570070513404, maxLat:1.4707748320860872, k:932.0970218810096};
@@ -432,15 +579,20 @@ async function loadStations(){
     const res = await fetch(PROXY_STATIONS_URL);
     if(!res.ok) throw new Error("Proxy " + res.status);
     d = await res.json();
+    if(!d.available || !Array.isArray(d.stations) || !d.stations.length) throw new Error("No station data");
   }catch(e){
     console.error(e);
-    drawAqRegions(lastStations, location.protocol === "file:"
+    const msg = location.protocol === "file:"
       ? "Station data is blocked when this page is opened as a file. Open it from http://localhost or your GitHub Pages link."
-      : "Station data unavailable (" + e.message + ").");
+      : "Station data unavailable (" + e.message + ").";
+    drawAqRegions(lastStations, msg);
+    $("aqErrMsg").textContent = msg; $("aqErr").hidden = false;
+    if(lastStations) renderAq(lastStations); else $("aqUpdated").textContent = "Not available";
     return;
   }
-  if(!d.available){ lastStations = null; drawAqRegions(null, ""); return; }
   lastStations = d;
+  $("aqErr").hidden = true;
+  renderAq(d);
   drawAqRegions(d);
 }
 
@@ -511,7 +663,7 @@ function drawAqRegions(d, msgText){
   $("aqRegNote").textContent = "Source: World Air Quality Index Project (waqi.info). Numbers in brackets are station counts." + (empty.length ? " No station in: " + empty.join(", ") + "." : "");
 }
 
-/* ===== TREND CHARTS (NEA and IQAir are separate) ===== */
+/* ===== TREND CHART (NEA) ===== */
 const fmtHour = v => new Date(v).toLocaleTimeString("en-SG", {timeZone:"Asia/Singapore", hour:"numeric", minute:"2-digit", hour12:true});
 
 
@@ -572,7 +724,7 @@ function renderNeaChart(){
   REGIONS.forEach(r => datasets.push({
     label:cap(r),
     data:nea.map(i => ({x:ts(i), y:i.readings.psi_twenty_four_hourly[r]})),
-    borderColor:REGION_COLORS[r], backgroundColor:REGION_COLORS[r], borderWidth:1.5, tension:.25, pointRadius:0, pointHoverRadius:4, pointHitRadius:8, order:2
+    borderColor:regionColor(r), backgroundColor:regionColor(r), borderWidth:1.75, hidden:hiddenRegions.has(r), tension:.25, pointRadius:0, pointHoverRadius:4, pointHitRadius:8, order:2
   }));
   const xs = nea.map(ts);
   let xmin = Math.min(...xs); const xmax = Math.max(...xs);
@@ -591,7 +743,7 @@ function renderNeaChart(){
         y:{min:0, suggestedMax:100, title:{display:true, text:"PSI (24-hr)"}}
       },
       plugins:{
-        legend:{position:"bottom"},
+        legend:{display:false},
         tooltip:{callbacks:{
           title:items => sgTime(items[0].parsed.x),
           label:c => c.dataset.label + ": " + c.parsed.y
@@ -603,30 +755,220 @@ function renderNeaChart(){
 
 
 
-/* ===== IQAIR (via proxy) ===== */
-let lastAq = null;
-async function loadAq(){
-  let d;
-  try{
-    const res = await fetch(PROXY_URL);
-    if(!res.ok) throw new Error("Proxy " + res.status);
-    d = await res.json();
-    if(typeof d.aqi !== "number") throw new Error("Unexpected reply");
-  }catch(e){
-    console.error(e);
-    $("aqErrMsg").textContent = location.protocol === "file:"
-      ? "IQAir is blocked when this page is opened as a file. Open it from http://localhost or your GitHub Pages link."
-      : "IQAir data unavailable (" + e.message + ").";
-    $("aqErr").hidden = false;
-    if(lastAq) renderAq(lastAq); else $("aqUpdated").textContent = "Not available";
-    return;
-  }
-  lastAq = d; renderAq(d); $("aqErr").hidden = true;
+/* ===== HERO, STATS, EXTRA CHARTS ===== */
+const natOf = it => Math.max(...REGIONS.map(r => Number(it.readings.psi_twenty_four_hourly[r])));
+const hourLbl = t => new Date(t).toLocaleTimeString("en-SG",{timeZone:"Asia/Singapore",hour:"numeric",hour12:true}).replace(" ","").toLowerCase();
+const el = (tag, cls, txt) => { const n = document.createElement(tag); if(cls) n.className = cls; if(txt != null) n.textContent = txt; return n; };
+
+function initHeroScale(){
+  const bar = $("scaleBar"), ticks = $("scaleTicks");
+  const edges = [0,50,100,200,300,400];
+  PSI_BANDS.forEach((b,i) => { const seg = el("i"); seg.style.flex = (edges[i+1]-edges[i]) + " 0 0"; seg.style.background = b.color; bar.appendChild(seg); });
+  [0,50,100,200,300].forEach(v => { const t = el("span", null, v); t.style.left = (v/400*100) + "%"; ticks.appendChild(t); });
 }
+
+function renderHero(items){
+  const latest = items[items.length-1], v = natOf(latest), band = bandOf(PSI_BANDS, v);
+  const psi = latest.readings.psi_twenty_four_hourly;
+  const top = [...REGIONS].sort((a,b) => psi[b]-psi[a])[0];
+  $("heroNum").textContent = v;
+  const hb = $("heroBand"); hb.textContent = band.name; hb.style.background = band.color;
+  $("heroStrip").style.background = band.color;
+  $("heroTitle").textContent = "Singapore air is " + band.name.toLowerCase();
+  $("heroTip").textContent = band.tip;
+  $("chipRegion").textContent = "Highest: " + cap(top) + " (" + psi[top] + ")";
+  let trend = "Steady vs 1 hour ago";
+  if(items.length > 1){
+    const d = v - natOf(items[items.length-2]);
+    trend = d > 1 ? "▲ Rising, +" + d + " vs 1 hour ago" : d < -1 ? "▼ Falling, " + d + " vs 1 hour ago" : "■ Steady vs 1 hour ago";
+  }
+  $("chipTrend").textContent = trend;
+  $("chipUpdated").textContent = "Updated " + sgTime(latest.updatedTimestamp || latest.timestamp);
+  $("scaleMark").style.left = Math.min(v/400,1)*100 + "%";
+}
+
+function renderStats(items){
+  const win = items.slice(-24), nat = win.map(natOf), box = $("stats");
+  box.replaceChildren();
+  const iMax = nat.indexOf(Math.max(...nat)), iMin = nat.indexOf(Math.min(...nat));
+  const avg = Math.round(nat.reduce((a,b) => a+b, 0)/nat.length);
+  const chg = nat[nat.length-1] - nat[0];
+  const tile = (k, v, band, sub) => {
+    const t = el("div", "tile"); t.append(el("div","k",k), el("div","v",v));
+    const s = el("div","s");
+    if(band){ const d = el("span","dot"); d.style.background = band.color; s.append(d, document.createTextNode(band.name + (sub ? ", " + sub : ""))); }
+    else s.textContent = sub;
+    t.append(s); box.appendChild(t);
+  };
+  tile("24h peak", nat[iMax], bandOf(PSI_BANDS, nat[iMax]), hourLbl(win[iMax].timestamp));
+  tile("24h low", nat[iMin], bandOf(PSI_BANDS, nat[iMin]), hourLbl(win[iMin].timestamp));
+  tile("24h average", avg, bandOf(PSI_BANDS, avg), "");
+  tile("Change over window", (chg > 0 ? "+" : "") + chg, null, (chg > 1 ? "▲ Higher" : chg < -1 ? "▼ Lower" : "■ Flat") + " than " + hourLbl(win[0].timestamp));
+}
+
+function renderHeat(items){
+  const win = items.slice(-24), n = win.length, box = $("heat");
+  box.replaceChildren();
+  REGIONS.forEach(r => {
+    box.appendChild(el("span","rl",cap(r)));
+    const cells = el("div","cells"); cells.style.gridTemplateColumns = "repeat(" + n + ",1fr)";
+    win.forEach(it => {
+      const v = Number(it.readings.psi_twenty_four_hourly[r]), b = bandOf(PSI_BANDS, v), c = el("i");
+      c.style.background = b.color; c.title = cap(r) + ", " + hourLbl(it.timestamp) + ": PSI " + v + " (" + b.name + ")";
+      c.setAttribute("role","img"); c.setAttribute("aria-label", c.title);
+      cells.appendChild(c);
+    });
+    box.appendChild(cells);
+  });
+  box.appendChild(el("span"));
+  const hl = el("div","hl"); hl.style.gridTemplateColumns = "repeat(" + n + ",1fr)";
+  win.forEach((it,i) => { const s = el("span", null, i % 4 === 0 ? hourLbl(it.timestamp) : ""); s.style.overflow = "visible"; s.style.whiteSpace = "nowrap"; hl.appendChild(s); });
+  box.appendChild(hl);
+}
+
+function renderBandHours(items){
+  const win = items.slice(-24), box = $("bandHours");
+  box.replaceChildren();
+  REGIONS.forEach(r => {
+    const counts = PSI_BANDS.map(() => 0);
+    win.forEach(it => { counts[PSI_BANDS.indexOf(bandOf(PSI_BANDS, Number(it.readings.psi_twenty_four_hourly[r])))]++; });
+    const row = el("div","bh"), seg = el("div","seg");
+    PSI_BANDS.forEach((b,i) => {
+      if(!counts[i]) return;
+      const p = el("i"); p.style.flex = counts[i] + " 0 0"; p.style.background = b.color;
+      p.title = cap(r) + ": " + counts[i] + " of " + win.length + " readings " + b.name.toLowerCase();
+      seg.appendChild(p);
+    });
+    const worst = counts.map((c,i) => c ? i : -1).filter(i => i >= 0).pop();
+    row.append(el("span", null, cap(r)), seg, el("span","tot", "Worst: " + PSI_BANDS[worst].name));
+    box.appendChild(row);
+  });
+}
+
+let pmChart = null;
+function renderPmChart(items){
+  chartTheme();
+  const win = items.slice(-24), ts = i => new Date(i.timestamp).getTime();
+  const ok = win.filter(i => i.readings.pm25_twenty_four_hourly);
+  if(!ok.length) return;
+  const datasets = REGIONS.map(r => ({
+    label:cap(r), data:ok.map(i => ({x:ts(i), y:Number(i.readings.pm25_twenty_four_hourly[r])})),
+    borderColor:regionColor(r), backgroundColor:regionColor(r), borderWidth:1.75, tension:.25, pointRadius:0, pointHoverRadius:4, pointHitRadius:8, hidden:hiddenRegions.has(r)
+  }));
+  const xs = ok.map(ts); let xmin = Math.min(...xs); const xmax = Math.max(...xs);
+  if(xmax - xmin < 3600e3) xmin = xmax - 6*3600e3;
+  if(pmChart) pmChart.destroy();
+  pmChart = new Chart($("pmTrend"), {
+    type:"line", data:{datasets:datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:false,
+      interaction:{mode:"nearest", intersect:false},
+      scales:{x:timeAxis(xmin, xmax), y:{min:0, suggestedMax:40, title:{display:true, text:"PM2.5, 24-hr average (µg/m³)"}}},
+      plugins:{legend:{display:false}, tooltip:{callbacks:{title:it => sgTime(it[0].parsed.x), label:c => c.dataset.label + ": " + c.parsed.y + " µg/m³"}}}
+    }
+  });
+}
+
+function initToggles(){
+  const box = $("regToggles");
+  REGIONS.forEach(r => {
+    const b = el("button"); b.type = "button"; b.setAttribute("aria-pressed","true");
+    const d = el("span","dot"); d.style.background = regionColor(r);
+    b.append(d, document.createTextNode(cap(r)));
+    b.onclick = () => {
+      if(hiddenRegions.has(r)) hiddenRegions.delete(r); else hiddenRegions.add(r);
+      b.setAttribute("aria-pressed", hiddenRegions.has(r) ? "false" : "true");
+      [neaChart, pmChart].forEach(c => { if(!c) return; const i = c.data.datasets.findIndex(d2 => d2.label === cap(r)); if(i >= 0){ c.data.datasets[i].hidden = hiddenRegions.has(r); c.update(); } });
+    };
+    box.appendChild(b);
+  });
+}
+
+function renderTrendTable(items){
+  const win = items.slice(-24), wrap = $("trendTable");
+  const t = el("table","t"), hr = el("tr");
+  ["Time","National",...REGIONS.map(cap)].forEach(h => hr.appendChild(el("th",null,h)));
+  t.appendChild(el("thead")).appendChild(hr);
+  const tb = el("tbody");
+  [...win].reverse().forEach(it => {
+    const tr = el("tr"); tr.appendChild(el("td",null,sgTime(it.timestamp))); tr.appendChild(el("td",null,natOf(it)));
+    REGIONS.forEach(r => tr.appendChild(el("td",null,it.readings.psi_twenty_four_hourly[r])));
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb); wrap.replaceChildren(t);
+}
+
+/* 7-day history (one NEA call per day, refreshed hourly) */
+let weekChart = null, lastWeek = null;
+async function loadWeek(){
+  try{
+    const dates = [-6,-5,-4,-3,-2,-1,0].map(sgDate);
+    const days = await Promise.all(dates.map(d => fetchNeaDay(d).catch(() => [])));
+    const out = [];
+    days.forEach((items, i) => {
+      const nat = items.map(natOf).filter(isFinite);
+      if(nat.length) out.push({date:dates[i], peak:Math.max(...nat), avg:Math.round(nat.reduce((a,b) => a+b, 0)/nat.length), n:nat.length});
+    });
+    if(!out.length) throw new Error("No history");
+    lastWeek = out; $("weekErr").hidden = true;
+    renderWeek();
+  }catch(e){ console.error(e); if(!lastWeek) $("weekErr").hidden = false; }
+}
+const dayLbl = d => new Date(d + "T12:00:00+08:00").toLocaleDateString("en-SG",{timeZone:"Asia/Singapore",weekday:"short",day:"numeric"});
+function renderWeek(){
+  if(!lastWeek) return;
+  const ink = chartTheme();
+  if(weekChart) weekChart.destroy();
+  weekChart = new Chart($("weekChart"), {
+    type:"bar",
+    data:{labels:lastWeek.map(d => dayLbl(d.date)), datasets:[
+      {type:"bar", label:"Daily peak", data:lastWeek.map(d => d.peak), backgroundColor:lastWeek.map(d => bandOf(PSI_BANDS, d.peak).color), borderRadius:{topLeft:4, topRight:4}, borderSkipped:"bottom", maxBarThickness:46, order:2},
+      {type:"line", label:"Daily average", data:lastWeek.map(d => d.avg), borderColor:ink, backgroundColor:ink, borderWidth:2, pointRadius:4, tension:0, order:1}
+    ]},
+    plugins:[bandShadingPlugin(PSI_BANDS)],
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:false,
+      scales:{y:{min:0, suggestedMax:100, title:{display:true, text:"PSI (24-hr)"}}, x:{grid:{display:false}}},
+      plugins:{legend:{position:"bottom"}, tooltip:{callbacks:{label:c => c.dataset.label + ": " + c.parsed.y + (c.datasetIndex === 0 ? " (" + bandOf(PSI_BANDS, c.parsed.y).name + ")" : "")}}}
+    }
+  });
+  const t = el("table","t"), hr = el("tr");
+  ["Day","Peak","Band","Average","Readings"].forEach(h => hr.appendChild(el("th",null,h)));
+  t.appendChild(el("thead")).appendChild(hr);
+  const tb = el("tbody");
+  lastWeek.forEach(d => { const tr = el("tr"); [dayLbl(d.date), d.peak, bandOf(PSI_BANDS, d.peak).name, d.avg, d.n].forEach(x => tr.appendChild(el("td",null,x))); tb.appendChild(tr); });
+  t.appendChild(tb); $("weekTable").replaceChildren(t);
+}
+
+function renderAdviceTable(){
+  const t = $("adviceTable"), hr = el("tr");
+  ["PSI","Band","Healthy adults","Elderly, pregnant, children, chronic illness"].forEach(h => hr.appendChild(el("th",null,h)));
+  t.appendChild(el("thead")).appendChild(hr);
+  const adv = [
+    ["Normal activities.", "Normal activities."],
+    ["Normal activities.", "Normal activities. Watch for symptoms if unusually sensitive."],
+    ["Reduce prolonged or strenuous outdoor activity.", "Minimise prolonged or strenuous outdoor activity."],
+    ["Minimise outdoor activity. Avoid strenuous exertion.", "Avoid outdoor activity. Stay indoors where possible."],
+    ["Avoid outdoor activity. Wear an N95 mask if you must go out.", "Stay indoors. Wear an N95 mask if you must go out."]
+  ];
+  const tb = el("tbody");
+  PSI_BANDS.forEach((b,i) => {
+    const tr = el("tr"), p = el("span","pill",b.name); p.style.background = b.color;
+    const c = el("td"); c.appendChild(p);
+    tr.append(el("td",null,rangeLabel(PSI_BANDS,i)), c, el("td",null,adv[i][0]), el("td",null,adv[i][1]));
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+}
+
+/* ===== US AQI PANEL (highest of the WAQI stations) ===== */
 function renderAq(d){
-  const band = bandOf(AQI_BANDS, d.aqi);
-  $("aqUpdated").textContent = "Singapore city reading. Updated " + sgTime(d.timestamp);
-  drawGauge($("aqGauge"), d.aqi, AQI_BANDS, 300);
+  const top = d.stations.reduce((m, st) => st.aqi > m.aqi ? st : m, d.stations[0]);
+  const band = bandOf(AQI_BANDS, top.aqi);
+  const times = d.stations.map(st => new Date(st.ts).getTime()).filter(isFinite);
+  $("aqUpdated").textContent = "Highest of " + d.stations.length + " stations (" + top.name.replace(/, Singapore$/, "") + ")." +
+    (times.length ? " Updated " + sgTime(Math.max(...times)) + "." : "");
+  drawGauge($("aqGauge"), top.aqi, AQI_BANDS, 300);
   setBadge($("aqBadge"), band);
   $("aqAdvice").textContent = band.tip;
   $("aqStale").hidden = !d.stale;
@@ -641,9 +983,11 @@ renderLegend($("pmLegend"), PM25_BANDS);
 renderLegend($("neaPmLegend"), PM25_BANDS);
 renderLegend($("aqRegLegend"), AQI_BANDS);
 initAqMap();
+initHeroScale(); initToggles(); renderAdviceTable();
+renderLegend($("heatLegend"), PSI_BANDS); renderLegend($("bhLegend"), PSI_BANDS);
 $("aqRegRetry").onclick = loadStations;
 $("neaRetry").onclick = loadNea;
-$("aqRetry").onclick = loadAq;
+$("aqRetry").onclick = loadStations;
 
 function tickClock(){ $("clock").textContent = new Date().toLocaleTimeString("en-SG",{timeZone:"Asia/Singapore",hour:"numeric",minute:"2-digit",hour12:true}) + " SGT"; }
 tickClock(); setInterval(tickClock, 30000);
@@ -653,11 +997,11 @@ function every(fn, minutes){
   let t = setInterval(()=>{ if(!document.hidden) fn(); }, minutes*60000);
   return t;
 }
-loadNea(); loadPm25(); loadAq(); loadStations();
+loadNea(); loadPm25(); loadStations(); loadWeek();
 every(loadNea, NEA_REFRESH_MIN);
-every(loadAq, IQAIR_REFRESH_MIN);
 every(loadPm25, NEA_REFRESH_MIN);
 every(loadStations, STATION_REFRESH_MIN);
+every(loadWeek, 60);
 document.addEventListener("visibilitychange", ()=>{ if(!document.hidden){ loadNea(); loadPm25(); } });
 </script>
 </body>
