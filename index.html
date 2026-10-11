@@ -37,7 +37,7 @@
   button{background:var(--mod);color:#fff;border:0;border-radius:8px;padding:6px 14px;cursor:pointer}
   .err{color:var(--vun);font-size:.9rem}
   .mapSvg{width:100%;display:block}
-  .mapSvg .reg{fill:var(--line);fill-opacity:.62;stroke:var(--card);stroke-width:1.2;stroke-linejoin:round}
+  .mapSvg .reg{fill:var(--line);fill-opacity:.62;stroke:none}
   .mapSvg text.lbl{paint-order:stroke;stroke:var(--card);stroke-width:3px;stroke-linejoin:round}
   .regGrid{align-items:center}
   .twoGauge{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
@@ -134,17 +134,17 @@
   </section>
 
   <section class="card" aria-labelledby="aqRegTitle">
-    <h2 id="aqRegTitle">IQAir US AQI by region</h2>
+    <h2 id="aqRegTitle">US AQI by region (WAQI)</h2>
     <div class="sub" id="aqRegSub">Loading...</div>
     <div class="grid regGrid">
       <div>
-        <svg class="mapSvg" id="aqRegionMap" viewBox="0 0 470 311" role="img" aria-label="Singapore map showing IQAir US AQI by region">
+        <svg class="mapSvg" id="aqRegionMap" viewBox="0 0 470 311" role="img" aria-label="Singapore map showing US AQI by region from WAQI">
           <rect width="470" height="311" rx="10" style="fill:var(--sea)"/>
           <g id="aqRegionAreas"></g>
           <g id="aqStationDots"></g>
           <g id="aqPins"></g>
         </svg>
-        <div class="shapeKey"><span><i class="circ"></i>Region average</span><span><i class="circ" style="width:8px;height:8px;margin:0 8px 0 3px"></i>IQAir station</span></div>
+        <div class="shapeKey"><span><i class="circ"></i>Region average</span><span><i class="circ" style="width:8px;height:8px;margin:0 8px 0 3px"></i>WAQI station</span></div>
       </div>
       <div>
         <div id="aqRegMsg" class="err" hidden><span id="aqRegMsgText"></span> <button id="aqRegRetry">Retry</button></div>
@@ -173,8 +173,8 @@ const NEA_REFRESH_MIN = 10;
 const IQAIR_REFRESH_MIN = 30;
 const NEA_API = "https://api-open.data.gov.sg/v2/real-time/api/psi";
 const PM25_API = "https://api-open.data.gov.sg/v2/real-time/api/pm25";
-const PROXY_STATIONS_URL = "https://runderful.vercel.app/api/iqair/stations";
-const STATION_REFRESH_MIN = 60;
+const PROXY_STATIONS_URL = "https://runderful.vercel.app/api/waqi";
+const STATION_REFRESH_MIN = 30;
 
 /* ===== BAND TABLES ===== */
 const PSI_BANDS = [
@@ -420,7 +420,7 @@ function drawRegionBars(psi, pm){
   });
 }
 
-/* ===== IQAIR BY REGION (station data via proxy) ===== */
+/* ===== US AQI BY REGION (WAQI stations via proxy) ===== */
 function initAqMap(){
   const dst = $("aqRegionAreas");
   document.querySelectorAll("#regionMap [data-r]").forEach(p => dst.appendChild(p.cloneNode(false)));
@@ -435,11 +435,11 @@ async function loadStations(){
   }catch(e){
     console.error(e);
     drawAqRegions(lastStations, location.protocol === "file:"
-      ? "IQAir is blocked when this page is opened as a file. Open it from http://localhost or your GitHub Pages link."
-      : "IQAir station data unavailable (" + e.message + ").");
+      ? "Station data is blocked when this page is opened as a file. Open it from http://localhost or your GitHub Pages link."
+      : "Station data unavailable (" + e.message + ").");
     return;
   }
-  if(!d.available){ lastStations = null; drawAqRegions(null, d.reason === "plan" ? "plan" : ""); return; }
+  if(!d.available){ lastStations = null; drawAqRegions(null, ""); return; }
   lastStations = d;
   drawAqRegions(d);
 }
@@ -450,9 +450,7 @@ function drawAqRegions(d, msgText){
   document.querySelectorAll("#aqRegionMap [data-r]").forEach(a => { a.style.fill = ""; a.replaceChildren(); });
 
   if(msgText != null){
-    $("aqRegMsgText").textContent = msgText === "plan"
-      ? "Station-level data needs an IQAir Startup plan or above. This key is on a plan without station access, so there is nothing to show yet."
-      : (msgText || "IQAir station data is not available right now.");
+    $("aqRegMsgText").textContent = msgText || "Station data is not available right now.";
     msg.hidden = false;
   }else{
     msg.hidden = true;
@@ -478,7 +476,7 @@ function drawAqRegions(d, msgText){
 
   rows.forEach(o => {
     const area = document.querySelector('#aqRegionMap [data-r="' + o.r + '"]');
-    const tip = cap(o.r) + ": " + (o.avg == null ? "no IQAir station" : "average US AQI " + o.avg + " (" + o.band.name + ") from " + o.n + " station" + (o.n === 1 ? "" : "s"));
+    const tip = cap(o.r) + ": " + (o.avg == null ? "no station" : "average US AQI " + o.avg + " (" + o.band.name + ") from " + o.n + " station" + (o.n === 1 ? "" : "s"));
     if(area){
       if(o.band) area.style.fill = o.band.color;
       svgMk(area, "title").textContent = tip;
@@ -510,7 +508,7 @@ function drawAqRegions(d, msgText){
     row.append(name, track, val); bars.appendChild(row);
   });
   const empty = rows.filter(o => !o.n).map(o => cap(o.r));
-  $("aqRegNote").textContent = "Numbers in brackets are station counts." + (empty.length ? " No IQAir station in: " + empty.join(", ") + "." : "");
+  $("aqRegNote").textContent = "Source: World Air Quality Index Project (waqi.info). Numbers in brackets are station counts." + (empty.length ? " No station in: " + empty.join(", ") + "." : "");
 }
 
 /* ===== TREND CHARTS (NEA and IQAir are separate) ===== */
