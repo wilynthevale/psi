@@ -30,10 +30,6 @@
   .bars .row{display:grid;grid-template-columns:70px 1fr 40px;gap:8px;align-items:center;margin:6px 0}
   .track{background:var(--line);border-radius:6px;height:14px;overflow:hidden}
   .fill{height:100%;border-radius:6px;transition:width .5s}
-  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
-  .tile{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-  .tile b{display:block;font-size:1.2rem}
-  .tile span{color:var(--muted);font-size:.78rem}
   .legend{display:grid;gap:4px;margin-top:10px;font-size:.82rem}
   .legend div{display:flex;align-items:center;gap:8px}
   .sw{width:14px;height:14px;border-radius:3px;flex:none}
@@ -44,6 +40,9 @@
   .mapSvg .reg{fill:var(--line);fill-opacity:.62;stroke:var(--card);stroke-width:1.2;stroke-linejoin:round}
   .mapSvg text.lbl{paint-order:stroke;stroke:var(--card);stroke-width:3px;stroke-linejoin:round}
   .regGrid{align-items:center}
+  .twoGauge{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+  .gaugeCap{text-align:center;font-weight:600;font-size:.88rem;margin-bottom:-4px}
+  .twoGauge .advice{font-size:.8rem}
   .barsHead,.row2{display:grid;grid-template-columns:62px 1fr 1fr;gap:10px;align-items:center}
   .barsHead{font-size:.78rem;color:var(--muted);margin-bottom:2px}
   .row2{margin:7px 0}
@@ -55,7 +54,7 @@
   .shapeKey .circ{border-radius:50%}
   .shapeKey .rsq{border-radius:4px}
   .legend.inline{display:flex;flex-wrap:wrap;gap:4px 14px}
-  .chartBox{position:relative;height:340px;margin-top:8px}
+  .chartBox{position:relative;height:360px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -68,13 +67,27 @@
   <div class="grid">
     <!-- NEA PANEL -->
     <section class="card" aria-labelledby="neaTitle">
-      <h2 id="neaTitle">NEA PSI (24-hour)</h2>
+      <h2 id="neaTitle">NEA PSI</h2>
       <div class="sub" id="neaUpdated">Loading...</div>
-      <div class="gaugeWrap"><svg id="neaGauge" viewBox="0 0 300 200" role="img" aria-label="National PSI gauge"></svg></div>
-      <div style="text-align:center"><span class="badge" id="neaBadge">-</span>
-        <p class="advice" id="neaAdvice"></p></div>
+      <div class="twoGauge">
+        <div>
+          <div class="gaugeCap">24-hr PSI</div>
+          <div class="gaugeWrap"><svg id="neaGauge" viewBox="0 0 300 200" role="img" aria-label="National 24-hour PSI gauge"></svg></div>
+          <div style="text-align:center"><span class="badge" id="neaBadge">-</span>
+            <p class="advice" id="neaAdvice"></p></div>
+        </div>
+        <div>
+          <div class="gaugeCap">1-hr PM2.5 (µg/m³)</div>
+          <div class="gaugeWrap"><svg id="pmGauge" viewBox="0 0 300 200" role="img" aria-label="National 1-hour PM2.5 gauge"></svg></div>
+          <div style="text-align:center"><span class="badge" id="pmBadge">-</span>
+            <p class="advice" id="pmAdvice"></p></div>
+        </div>
+      </div>
       <div id="neaErr" class="err" hidden>Data unavailable. <button id="neaRetry">Retry</button></div>
-      <div class="legend" id="neaLegend" aria-label="PSI legend"></div>
+      <div class="legendPair">
+        <div><b>24-hr PSI</b><div class="legend" id="neaLegend" aria-label="24-hour PSI legend"></div></div>
+        <div><b>1-hr PM2.5</b><div class="legend" id="neaPmLegend" aria-label="1-hour PM2.5 legend"></div></div>
+      </div>
     </section>
 
     <!-- IQAIR PANEL -->
@@ -84,11 +97,6 @@
       <div class="gaugeWrap"><svg id="aqGauge" viewBox="0 0 300 200" role="img" aria-label="US AQI gauge"></svg></div>
       <div style="text-align:center"><span class="badge" id="aqBadge">-</span>
         <p class="advice" id="aqAdvice"></p>
-        <div class="tiles" style="margin-top:10px">
-          <div class="tile"><span>Main pollutant</span><b id="aqMain">-</b></div>
-          <div class="tile"><span>Temperature</span><b id="aqTemp">-</b></div>
-          <div class="tile"><span>Humidity</span><b id="aqHum">-</b></div>
-        </div>
         <div class="stale" id="aqStale" hidden>Showing the last saved reading.</div></div>
       <div id="aqErr" class="err" hidden><span id="aqErrMsg">IQAir data unavailable.</span> <button id="aqRetry">Retry</button></div>
       <div class="legend" id="aqLegend" aria-label="US AQI legend"></div>
@@ -147,21 +155,13 @@
     </div>
   </section>
 
-  <div class="grid">
-    <section class="card" aria-labelledby="neaChartTitle">
-      <h2 id="neaChartTitle">NEA PSI: 24-hour trend</h2>
-      <div class="sub">National figure (thick line) and the five regions. Shading follows the PSI legend.</div>
-      <div class="chartBox"><canvas id="neaTrend" aria-label="NEA PSI by region over 24 hours"></canvas></div>
-      <div class="legend inline" id="neaTrendLegend" aria-label="PSI bands used for chart shading"></div>
-    </section>
-    <section class="card" aria-labelledby="aqChartTitle">
-      <h2 id="aqChartTitle">IQAir US AQI: trend</h2>
-      <div class="sub">Singapore city reading. Shading follows the US AQI legend.</div>
-      <div class="chartBox"><canvas id="aqTrend" aria-label="IQAir US AQI over time"></canvas></div>
-      <div class="legend inline" id="aqTrendLegend" aria-label="US AQI bands used for chart shading"></div>
-      <p class="note" id="aqHistNote"></p>
-    </section>
-  </div>
+  <section class="card" aria-labelledby="neaChartTitle">
+    <h2 id="neaChartTitle">NEA PSI: 24-hour trend</h2>
+    <div class="sub">National figure (thick line) and the five regions. Shading follows the PSI legend.</div>
+    <div class="chartBox"><canvas id="neaTrend" aria-label="NEA PSI by region over 24 hours"></canvas></div>
+    <div class="legend inline" id="neaTrendLegend" aria-label="PSI bands used for chart shading"></div>
+  </section>
+
 
   <p class="note">Sources: NEA via data.gov.sg; IQAir AirVisual. This page is for general information only.</p>
 </main>
@@ -197,7 +197,6 @@ const rangeLabel = (bands, i) => {
   const lo = i === 0 ? 0 : bands[i-1].max + 1;
   return bands[i].max === Infinity ? lo + "+" : lo + " to " + bands[i].max;
 };
-const POLLUTANT_NAMES = {p2:"PM2.5", p1:"PM10", o3:"O3", n2:"NO2", s2:"SO2", co:"CO"};
 
 /* ===== HELPERS ===== */
 const $ = id => document.getElementById(id);
@@ -246,8 +245,8 @@ function drawGauge(svg, value, bands, scaleMax){
   const txt = document.createElementNS(ns,"text");
   txt.setAttribute("x",cx); txt.setAttribute("y",cy+52); txt.setAttribute("text-anchor","middle");
   txt.setAttribute("font-size","30"); txt.setAttribute("font-weight","700"); txt.setAttribute("fill","currentColor");
-  txt.textContent = Math.round(value);
-  svg.append(needle, hub, txt);
+  txt.textContent = value == null ? "-" : Math.round(value);
+  if(value == null) svg.append(txt); else svg.append(needle, hub, txt);
 }
 
 function setBadge(el, band){ el.textContent = band.name; el.style.background = band.color; }
@@ -284,7 +283,7 @@ function renderNea(items){
   const national = Math.max(...REGIONS.map(r=>psi[r]));
   const band = bandOf(PSI_BANDS, national);
 
-  $("neaUpdated").textContent = "National PSI (highest of 5 regions). Updated " + sgTime(latest.updatedTimestamp || latest.timestamp);
+  renderNeaUpdated();
   drawGauge($("neaGauge"), national, PSI_BANDS, 300);
   setBadge($("neaBadge"), band);
   $("neaAdvice").textContent = band.tip;
@@ -313,10 +312,10 @@ function regionOf(lat, lon){
 }
 // NEA 1-hr PM2.5 bands (ug/m3)
 const PM25_BANDS = [
-  {max:55,  name:"Normal",    color:"#2e9e5b"},
-  {max:150, name:"Elevated",  color:"#e8a21a"},
-  {max:250, name:"High",      color:"#d63b3b"},
-  {max:Infinity, name:"Very high", color:"#7a1f3d"}
+  {max:55,  name:"Normal",    color:"#2e9e5b", tip:"Normal activities are fine."},
+  {max:150, name:"Elevated",  color:"#e8a21a", tip:"Reduce prolonged or strenuous outdoor activity, especially if sensitive."},
+  {max:250, name:"High",      color:"#d63b3b", tip:"Avoid strenuous outdoor activity. Sensitive groups should stay indoors."},
+  {max:Infinity, name:"Very high", color:"#7a1f3d", tip:"Minimise outdoor activity. Wear an N95 mask if you must go out."}
 ];
 
 const SVGNS = "http://www.w3.org/2000/svg";
@@ -337,8 +336,26 @@ async function loadPm25(){
     const items = (json.data && json.data.items) || [];
     if(!items.length) throw new Error("No PM2.5 data");
     lastPm25 = items.reduce((a, b) => new Date(b.timestamp) > new Date(a.timestamp) ? b : a);
+    renderPmGauge(); renderNeaUpdated();
     renderRegionView();
   }catch(e){ console.error(e); }
+}
+
+function renderPmGauge(){
+  const pm = lastPm25 ? lastPm25.readings.pm25_one_hourly : null;
+  const v = pm ? Math.max(...REGIONS.map(r => Number(pm[r]))) : null;
+  drawGauge($("pmGauge"), v, PM25_BANDS, 300);
+  if(v == null){ $("pmBadge").textContent = "-"; $("pmBadge").style.background = "#9aa8b6"; $("pmAdvice").textContent = ""; return; }
+  const b = bandOf(PM25_BANDS, v);
+  setBadge($("pmBadge"), b);
+  $("pmAdvice").textContent = b.tip;
+}
+
+function renderNeaUpdated(){
+  const ts = [];
+  if(lastNea){ const l = lastNea[lastNea.length - 1]; ts.push(new Date(l.updatedTimestamp || l.timestamp).getTime()); }
+  if(lastPm25) ts.push(new Date(lastPm25.updatedTimestamp || lastPm25.timestamp).getTime());
+  $("neaUpdated").textContent = "Highest of the 5 regions." + (ts.length ? " Updated " + sgTime(Math.max(...ts)) + "." : "");
 }
 
 function renderRegionView(){
@@ -497,34 +514,10 @@ function drawAqRegions(d, msgText){
 }
 
 /* ===== TREND CHARTS (NEA and IQAir are separate) ===== */
-const AQ_HIST_KEY = "sgAqiHistory";
 const fmtHour = v => new Date(v).toLocaleTimeString("en-SG", {timeZone:"Asia/Singapore", hour:"numeric", minute:"2-digit", hour12:true});
 
-function loadAqHistory(){
-  try{
-    const arr = JSON.parse(localStorage.getItem(AQ_HIST_KEY) || "[]");
-    const cutoff = Date.now() - 24*3600e3;
-    return arr.filter(p => p && typeof p.v === "number" && p.t >= cutoff);
-  }catch(e){ return []; }
-}
-function saveAqHistory(d){
-  const t = new Date(d.timestamp).getTime();
-  if(!isFinite(t) || d.stale) return;
-  const hist = loadAqHistory();
-  if(!hist.some(p => p.t === t)) hist.push({t:t, v:d.aqi});
-  hist.sort((a, b) => a.t - b.t);
-  try{ localStorage.setItem(AQ_HIST_KEY, JSON.stringify(hist)); }catch(e){}
-}
-function aqHistoryWithCurrent(){
-  const hist = loadAqHistory();
-  if(lastAq && !lastAq.stale){
-    const t = new Date(lastAq.timestamp).getTime();
-    if(isFinite(t) && t >= Date.now() - 24*3600e3 && !hist.some(p => p.t === t)) hist.push({t:t, v:lastAq.aqi});
-  }
-  return hist.sort((a, b) => a.t - b.t);
-}
 
-let neaChart = null, aqChart = null;
+let neaChart = null;
 
 // Shades the chart background using the given legend bands
 function bandShadingPlugin(bands){
@@ -610,46 +603,7 @@ function renderNeaChart(){
   });
 }
 
-function renderAqChart(){
-  const hist = aqHistoryWithCurrent();
-  $("aqHistNote").textContent = hist.length > 1
-    ? "IQAir has no free history feed, so this line is built from readings saved in this browser, roughly one per hour."
-    : hist.length === 1
-      ? "IQAir gives its latest reading only. The line fills in as this browser keeps collecting hourly readings."
-      : "IQAir reading is not available right now.";
-  if(aqChart){ aqChart.destroy(); aqChart = null; }
-  if(!hist.length) return;
-  chartTheme();
-  let xmin = hist[0].t, xmax = hist[hist.length - 1].t;
-  if(xmax - xmin < 6*3600e3) xmin = xmax - 6*3600e3;
-  xmax += 20*60e3;
 
-  aqChart = new Chart($("aqTrend"), {
-    type:"line",
-    data:{datasets:[{
-      label:"IQAir US AQI",
-      data:hist.map(p => ({x:p.t, y:p.v})),
-      borderColor:"#d946ef", backgroundColor:"#d946ef", borderWidth:3, tension:.25,
-      pointStyle:"rectRot", pointRadius:5, pointHoverRadius:7, pointHitRadius:10
-    }]},
-    plugins:[bandShadingPlugin(AQI_BANDS)],
-    options:{
-      responsive:true, maintainAspectRatio:false, animation:false,
-      interaction:{mode:"nearest", intersect:false},
-      scales:{
-        x:timeAxis(xmin, xmax),
-        y:{min:0, suggestedMax:100, title:{display:true, text:"US AQI"}}
-      },
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{
-          title:items => sgTime(items[0].parsed.x),
-          label:c => "US AQI " + c.parsed.y + " (" + bandOf(AQI_BANDS, c.parsed.y).name + ")"
-        }}
-      }
-    }
-  });
-}
 
 /* ===== IQAIR (via proxy) ===== */
 let lastAq = null;
@@ -669,7 +623,7 @@ async function loadAq(){
     if(lastAq) renderAq(lastAq); else $("aqUpdated").textContent = "Not available";
     return;
   }
-  lastAq = d; saveAqHistory(d); renderAq(d); $("aqErr").hidden = true;
+  lastAq = d; renderAq(d); $("aqErr").hidden = true;
 }
 function renderAq(d){
   const band = bandOf(AQI_BANDS, d.aqi);
@@ -677,11 +631,7 @@ function renderAq(d){
   drawGauge($("aqGauge"), d.aqi, AQI_BANDS, 300);
   setBadge($("aqBadge"), band);
   $("aqAdvice").textContent = band.tip;
-  $("aqMain").textContent = POLLUTANT_NAMES[d.mainPollutant] || d.mainPollutant || "-";
-  $("aqTemp").textContent = d.temperature != null ? d.temperature + " °C" : "-";
-  $("aqHum").textContent = d.humidity != null ? d.humidity + "%" : "-";
   $("aqStale").hidden = !d.stale;
-  renderAqChart();
 }
 
 /* ===== BOOT ===== */
@@ -689,8 +639,8 @@ renderLegend($("neaLegend"), PSI_BANDS);
 renderLegend($("aqLegend"), AQI_BANDS);
 renderLegend($("mapLegend"), PSI_BANDS);
 renderLegend($("neaTrendLegend"), PSI_BANDS);
-renderLegend($("aqTrendLegend"), AQI_BANDS);
 renderLegend($("pmLegend"), PM25_BANDS);
+renderLegend($("neaPmLegend"), PM25_BANDS);
 renderLegend($("aqRegLegend"), AQI_BANDS);
 initAqMap();
 $("aqRegRetry").onclick = loadStations;
